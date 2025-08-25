@@ -1,0 +1,125 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+
+@layer base {
+  :root {
+    /* Base colors - white, black, gold theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    /* Gold primary with enhanced vibrancy */
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Rich amber secondary */
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Warm gold accent colors */
+    --accent: 42 87% 55%;
+    --accent-foreground: 0 0% 8%;
+
+    /* Enhanced muted colors with warm undertones */
+    --muted: 40 15% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    /* Vibrant complementary colors */
+    --vibrant-gold: 38 92% 50%;
+    --vibrant-amber: 45 93% 47%;
+    --vibrant-bronze: 30 65% 35%;
+    --vibrant-champagne: 50 89% 85%;
+    
+    /* Rich accent palette */
+    --deep-charcoal: 0 0% 15%;
+    --warm-black: 0 0% 8%;
+    --soft-white: 0 0% 98%;
+    --cream: 48 67% 94%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 40 12% 88%;
+    --input: 40 12% 88%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.5rem;
+
+    /* Enhanced statistic colors with gold harmony */
+    --stats-gold: 38 92% 50%;
+    --stats-bronze: 30 65% 35%;
+    --stats-amber: 45 93% 47%;
+    --stats-champagne: 50 89% 85%;
+    --stats-royal-gold: 42 100% 45%;
+
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 15%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 15% 96%;
+    --sidebar-accent-foreground: 0 0% 15%;
+    --sidebar-border: 40 12% 88%;
+    --sidebar-ring: 38 92% 50%;
+  }
+
+  .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Enhanced gold for dark mode */
+    --primary: 38 92% 55%;
+    --primary-foreground: 0 0% 8%;
+
+    --secondary: 45 93% 52%;
+    --secondary-foreground: 0 0% 8%;
+
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 42 87% 60%;
+    --accent-foreground: 0 0% 8%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 38 92% 55%;
+
+    /* Dark mode sidebar */
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 38 92% 55%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 38 92% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
