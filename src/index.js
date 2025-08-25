@@ -17,11 +17,11 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   bootstrap({ strapi }) {
-    // Add a simple health check route
+    // Add a simple health check route for API
     strapi.server.routes([
       {
         method: 'GET',
-        path: '/',
+        path: '/api/health',
         handler: (ctx) => {
           ctx.body = { status: 'ok', message: 'Strapi is running' };
         },

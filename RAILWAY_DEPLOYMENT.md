@@ -1,29 +1,45 @@
 # Railway Deployment Guide
 
-## Fixed Issues
+## Build Configuration Fixed
 
-The Railway deployment was failing due to health check configuration issues. The following fixes have been implemented:
+The Railway deployment now includes proper build processes for both the React frontend and Strapi CMS:
 
-### 1. Health Check Configuration
-- **Issue**: Railway was checking `/admin` endpoint which requires authentication
-- **Fix**: Changed health check to `/` endpoint in `railway.json`
-- **Added**: Simple health check route in `src/index.js` that returns `{ status: 'ok', message: 'Strapi is running' }`
+### 1. Build Process
+- **Frontend Build**: `npm run build:frontend` builds React app in `frontend/dist/`
+- **Strapi Build**: `strapi build` builds the admin panel
+- **Combined Build**: `npm run build` runs both builds sequentially
+- **Static Serving**: Frontend served from `/`, Strapi admin from `/admin`
 
-### 2. Server Configuration
-- **Updated**: `config/server.js` with proper Railway environment variables
-- **Added**: Fallback values for APP_KEYS and URL configuration
-- **Set**: `RAILWAY_STATIC_URL` as fallback for URL configuration
+### 2. Railway Configuration (`railway.json`)
+```json
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "npm run build"
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "healthcheckPath": "/api/health",
+    "healthcheckTimeout": 300
+  }
+}
+```
 
-### 3. Database Configuration
-- **Updated**: `config/database.js` to support both SQLite (local) and PostgreSQL (production)
-- **Added**: Proper SSL configuration for production database
-- **Set**: Connection timeouts and pool settings
+### 3. Static File Serving
+- **Frontend**: Served from `/` via `config/middlewares.js`
+- **Admin Panel**: Available at `/admin`
+- **API**: Available at `/api/*`
+- **Health Check**: Available at `/api/health`
 
-### 4. Environment Variables
-Created `.env.example` with required variables for Railway:
+### 4. Server Configuration
+- **Updated**: `config/server.js` with Railway environment variables
+- **Database**: Flexible SQLite (local) / PostgreSQL (production)
+- **Static Files**: Frontend dist folder served by Strapi
+
+### 5. Environment Variables
+Required for Railway deployment:
 
 ```env
-# Required for Railway deployment
 DATABASE_CLIENT=postgres
 DATABASE_URL=${DATABASE_URL}
 URL=${RAILWAY_STATIC_URL}
@@ -34,41 +50,31 @@ TRANSFER_TOKEN_SALT=your-transfer-token-salt
 JWT_SECRET=your-jwt-secret
 ```
 
-## Railway Configuration
+## Deployment Architecture
 
-The `railway.json` now includes:
-- Health check path: `/` (instead of `/admin`)
-- Health check timeout: 300 seconds
-- Restart policy: ON_FAILURE
+```
+Railway Deployment:
+├── Frontend (React) → Built to frontend/dist/ → Served at /
+├── Strapi Admin → Built with strapi build → Served at /admin
+├── Strapi API → Available at /api/*
+└── Health Check → Available at /api/health
+```
 
 ## Deployment Steps
 
 1. **Push changes** to your repository
-2. **Set environment variables** in Railway dashboard:
-   - `DATABASE_CLIENT=postgres`
-   - `APP_KEYS` (generate secure keys)
-   - `API_TOKEN_SALT` (generate secure salt)
-   - `ADMIN_JWT_SECRET` (generate secure secret)
-   - `TRANSFER_TOKEN_SALT` (generate secure salt)
-   - `JWT_SECRET` (generate secure secret)
-3. **Redeploy** the application
+2. **Set environment variables** in Railway dashboard
+3. **Deploy** - Railway will:
+   - Install dependencies
+   - Build frontend (`cd frontend && npm ci && npm run build`)
+   - Build Strapi admin (`strapi build`)
+   - Start server (`npm start`)
+   - Health check at `/api/health`
 
-## Health Check Endpoint
-
-The application now responds to `GET /` with:
-```json
-{
-  "status": "ok",
-  "message": "Strapi is running"
-}
-```
-
-This endpoint is unauthenticated and will allow Railway's health check to pass.
-
-## Next Steps
+## Access Points
 
 After successful deployment:
-1. Access Strapi admin at `https://your-app.railway.app/admin`
-2. Create your admin user
-3. Configure content types and permissions
-4. Update frontend environment variables to point to your Railway URL
+- **Frontend**: `https://your-app.railway.app/`
+- **Admin Panel**: `https://your-app.railway.app/admin`
+- **API**: `https://your-app.railway.app/api/*`
+- **Health Check**: `https://your-app.railway.app/api/health`

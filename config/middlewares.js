@@ -9,4 +9,16 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  {
+    name: 'strapi::static',
+    config: {
+      dirs: [
+        {
+          path: './frontend/dist',
+          route: '/',
+          index: 'index.html'
+        }
+      ]
+    }
+  }
 ];
