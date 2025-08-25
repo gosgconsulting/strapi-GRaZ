@@ -16,5 +16,17 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap({ strapi }) {
+    // Add a simple health check route
+    strapi.server.routes([
+      {
+        method: 'GET',
+        path: '/',
+        handler: (ctx) => {
+          ctx.body = { status: 'ok', message: 'Strapi is running' };
+        },
+        config: { auth: false }
+      }
+    ]);
+  },
 };
